@@ -7,23 +7,23 @@ import About from "./about";
 
 export default function App() {
   return (
-    <div className="scroll-smooth">
+    <>
       <Navbar />
 
-      <main>
-        <section id="home" className="min-h-[90vh] md:min-h-screen scroll-mt-24">
+      <main className="snap-y snap-mandatory">
+        <section id="home" className="h-screen snap-start">
           <Home />
         </section>
-        <section id="projects" className="min-h-screen scroll-mt-24">
+        <section id="projects" className="min-h-screen snap-start">
           <Projects />
         </section>
-        <section id="about" className="min-h-screen scroll-mt-24">
+        <section id="about" className="h-screen snap-start">
           <About />
         </section>
-        <section id="contact" className="min-h-screen scroll-mt-24">
+        <section id="contact" className="h-screen snap-start">
           <Contact />
         </section>
       </main>
-    </div>
+    </>
   );
 }
