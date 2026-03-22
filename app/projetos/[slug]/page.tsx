@@ -43,7 +43,29 @@ const projects: Record<string, ProjectMeta> = {
     },
 };
 
-const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
+const placeholderProject = (title: string, folder: string, category: string): ProjectMeta => ({
+    title,
+    category,
+    folder,
+    cover: "cover.svg",
+    description: "Projeto em desenvolvimento. Mais detalhes em breve.",
+    details: ["Localização: Brasília, DF", `Tipologia: ${category}`],
+});
+
+Object.assign(projects, {
+    aurora: placeholderProject("Aurora", "Aurora", "Comercial"),
+    helena: placeholderProject("Residência Helena", "Helena", "Residencial"),
+    vitoria: placeholderProject("Edifício Vitória", "Vitoria", "Corporativo"),
+    clara: placeholderProject("Residência Clara", "Clara", "Residencial"),
+    luna: placeholderProject("Studio Luna", "Luna", "Interiores"),
+    marina: placeholderProject("Residência Marina", "Marina", "Residencial"),
+    olivia: placeholderProject("Espaço Olivia", "Olivia", "Comercial"),
+    sofia: placeholderProject("Residência Sofia", "Sofia", "Residencial"),
+    isabel: placeholderProject("Studio Isabel", "Isabel", "Interiores"),
+    alice: placeholderProject("Residência Alice", "Alice", "Residencial"),
+});
+
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif", ".svg"]);
 
 function getProjectImages(folder: string, cover: string): string[] {
     const dir = path.join(process.cwd(), "public", "assets", "projetos", folder);

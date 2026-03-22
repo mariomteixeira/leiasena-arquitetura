@@ -19,38 +19,73 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="relative flex items-end h-full min-h-screen">
-            {heroImages.map((src, i) => (
-                <Image
-                    key={src}
-                    src={src}
-                    alt="Projeto de arquitetura"
-                    fill
-                    priority={i === 0}
-                    className={`object-cover transition-opacity duration-1500 ease-in-out ${i === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-                />
-            ))}
-
-            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
-
-            <div className="relative z-10 w-full px-6 sm:px-8 lg:px-12 pb-16 sm:pb-20 md:pb-24">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight text-white">
-                    Arquitetura que<br />transforma espaços
-                </h1>
-                <p className="mt-3 sm:mt-4 max-w-lg text-base sm:text-lg md:text-xl text-white/70 font-light">
-                    Projetos residenciais com design contemporâneo
-                </p>
-            </div>
-
-            <div className="absolute bottom-6 sm:bottom-8 right-6 sm:right-8 z-10 flex gap-2">
-                {heroImages.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => setCurrentIndex(i)}
-                        className={`w-8 sm:w-10 h-0.5 rounded-full transition-colors duration-500 ${i === currentIndex ? 'bg-white' : 'bg-white/30'}`}
-                        aria-label={`Slide ${i + 1}`}
+        <div className="relative h-full lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 lg:py-8">
+            {/* Mobile/tablet: full bleed hero */}
+            <div className="relative h-full lg:hidden">
+                {heroImages.map((src, i) => (
+                    <Image
+                        key={src}
+                        src={src}
+                        alt="Projeto de arquitetura"
+                        fill
+                        priority={i === 0}
+                        className={`object-cover transition-opacity duration-1500 ease-in-out ${i === currentIndex ? 'opacity-100' : 'opacity-0'}`}
                     />
                 ))}
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 z-10 px-4 sm:px-8 pb-20 sm:pb-24">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-light leading-tight tracking-tight text-white">
+                        Arquitetura que<br />transforma espaços
+                    </h1>
+                    <p className="mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-white/70 font-light">
+                        Projetos residenciais com design contemporâneo
+                    </p>
+                </div>
+                <div className="absolute bottom-8 sm:bottom-10 right-4 sm:right-8 z-10 flex gap-2">
+                    {heroImages.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentIndex(i)}
+                            className={`w-6 sm:w-8 h-0.5 rounded-full transition-colors duration-500 ${i === currentIndex ? 'bg-white' : 'bg-white/30'}`}
+                            aria-label={`Slide ${i + 1}`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Desktop: contained hero */}
+            <div className="hidden lg:block w-full max-w-7xl">
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+                    {heroImages.map((src, i) => (
+                        <Image
+                            key={src}
+                            src={src}
+                            alt="Projeto de arquitetura"
+                            fill
+                            priority={i === 0}
+                            className={`object-cover transition-opacity duration-1500 ease-in-out ${i === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                        />
+                    ))}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 z-10 px-10 pb-10">
+                        <h1 className="text-5xl xl:text-6xl font-light leading-tight tracking-tight text-white">
+                            Arquitetura que<br />transforma espaços
+                        </h1>
+                        <p className="mt-3 max-w-lg text-lg text-white/70 font-light">
+                            Projetos residenciais com design contemporâneo
+                        </p>
+                    </div>
+                    <div className="absolute bottom-8 right-10 z-10 flex gap-2">
+                        {heroImages.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setCurrentIndex(i)}
+                                className={`w-10 h-0.5 rounded-full transition-colors duration-500 ${i === currentIndex ? 'bg-white' : 'bg-white/30'}`}
+                                aria-label={`Slide ${i + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     )

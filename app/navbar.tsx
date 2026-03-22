@@ -33,30 +33,34 @@ export default function Navbar() {
     }, [isMenuOpen]);
 
     return (
-        <header className="fixed top-0 left-0 w-full z-50 border-b border-b-black/5 bg-ice-white/60 backdrop-blur-xl backdrop-saturate-150">
-            <nav className="mx-auto flex w-full items-center px-4 py-3 sm:px-6 lg:px-8">
-                <Image
-                    src="/assets/logo/svg/Horizontal/HORIZONTAL - NEG 1.svg"
-                    alt="Leia Sena Arquitetura"
-                    width={800}
-                    height={250}
-                    className="h-auto w-[180px] sm:w-[220px] md:w-[280px] lg:w-[340px] xl:w-60"
-                />
+        <>
+            <nav className="fixed right-0 top-0 z-50 hidden lg:flex flex-col items-center gap-14 px-8 xl:px-15 pt-24">
+                <a href="#home">
+                    <Image
+                        src="/assets/logo/svg/Vertical/VERTICAL-NEG1.svg"
+                        alt="Leia Sena Arquitetura"
+                        width={160}
+                        height={200}
+                        className="h-auto w-20 xl:w-24"
+                    />
+                </a>
 
-                <ul className="hidden lg:flex items-center gap-8 ml-auto">
+                <ul className="flex flex-col items-center gap-5">
                     {navLinks.map(link => (
                         <li key={link.href}>
                             <a
                                 href={link.href}
-                                className="text-sm tracking-widest uppercase text-foreground/60 hover:text-foreground transition-colors duration-300"
+                                className="text-base font-semibold tracking-widest uppercase text-foreground/50 hover:text-foreground transition-colors duration-300"
                             >
                                 {link.label}
                             </a>
                         </li>
                     ))}
                 </ul>
+            </nav>
 
-                <div className="ml-auto lg:hidden relative">
+            <header className="fixed top-0 right-0 z-50 lg:hidden p-4">
+                <div className="relative">
                     <button
                         ref={buttonRef}
                         type="button"
@@ -65,7 +69,7 @@ export default function Navbar() {
                         aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
                         className="inline-flex items-center justify-center transition active:scale-95 h-10 w-10"
                     >
-                        <span className={`inline-block transform transition-transform duration-300 ease-out ${isMenuOpen ? 'rotate-90' : ''} size-6 sm:size-7 md:size-8`}>
+                        <span className={`inline-block transform transition-transform duration-300 ease-out ${isMenuOpen ? 'rotate-90' : ''} size-6 sm:size-7`}>
                             <Image
                                 src="/assets/icons/menu-burger-horizontal-light.svg"
                                 alt=""
@@ -88,7 +92,7 @@ export default function Navbar() {
                                     key={link.href}
                                     href={link.href}
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="px-6 py-3 text-sm tracking-widest uppercase text-foreground/70 hover:text-foreground hover:bg-black/5 transition-colors duration-200"
+                                    className="px-6 py-3 text-sm font-semibold tracking-widest uppercase text-foreground/70 hover:text-foreground hover:bg-black/5 transition-colors duration-200"
                                 >
                                     {link.label}
                                 </a>
@@ -96,7 +100,7 @@ export default function Navbar() {
                         </nav>
                     </div>
                 </div>
-            </nav>
-        </header>
+            </header>
+        </>
     )
 }

@@ -41,22 +41,29 @@ html.lenis, html.lenis body {
   scroll-behavior: auto;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Project card border radius — only 4 outer corners */
+.project-card {
+  border-radius: 0;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
+/* Mobile: 3 cols x 4 rows */
+@media (max-width: 639px) {
+  .project-card:first-child { border-top-left-radius: 0.75rem; }
+  .project-card:nth-child(3) { border-top-right-radius: 0.75rem; }
+  .project-card:nth-last-child(3) { border-bottom-left-radius: 0.75rem; }
+  .project-card:last-child { border-bottom-right-radius: 0.75rem; }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* Desktop: 4 cols x 3 rows */
+@media (min-width: 640px) {
+  .project-card:first-child { border-top-left-radius: 1rem; }
+  .project-card:nth-child(4) { border-top-right-radius: 1rem; }
+  .project-card:nth-last-child(4) { border-bottom-left-radius: 1rem; }
+  .project-card:last-child { border-bottom-right-radius: 1rem; }
 }
 
 .skeleton {
