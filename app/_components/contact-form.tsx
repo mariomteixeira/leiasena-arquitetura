@@ -60,7 +60,7 @@ export default function ContactForm() {
     return (
         <form onSubmit={handleSubmit} className="bg-foreground/3 border border-foreground/10 rounded-xl p-6 sm:p-8 space-y-5">
             <h3 className="text-base sm:text-lg uppercase tracking-widest text-foreground/50">
-                Deixe suas informações e entrarei em contato:
+                Deixe suas informações e entraremos em contato:
             </h3>
 
             <div>

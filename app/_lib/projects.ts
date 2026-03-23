@@ -13,7 +13,7 @@ function buildImages(folder: string, count: number, ext = "png"): string[] {
 
 export const projects: Project[] = [
     { slug: "anny", title: "Anny", cover: "/assets/projetos/Anny/01.png", images: buildImages("Anny", 12) },
-    { slug: "debora", title: "Debora", cover: "/assets/projetos/Debora/01.png", images: buildImages("Debora", 8) },
+    { slug: "debora", title: "Débora", cover: "/assets/projetos/Debora/01.png", images: buildImages("Debora", 8) },
     { slug: "felipe", title: "Felipe", cover: "/assets/projetos/Felipe/01.png", images: buildImages("Felipe", 8) },
     { slug: "gustavo", title: "Gustavo", cover: "/assets/projetos/Gustavo/01.png", images: buildImages("Gustavo", 10) },
 ];
