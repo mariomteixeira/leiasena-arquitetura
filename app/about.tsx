@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function About() {
     return (
         <div className="flex flex-col justify-center h-full px-4 sm:px-8 min-[1020px]:flex min-[1020px]:items-center min-[1020px]:px-12 min-[1020px]:py-8 font-mono">
@@ -14,7 +16,13 @@ export default function About() {
                             Atua com metodologia BIM e renderização autoral para transformar cada projeto em uma experiência sensorial — criando ambientes residenciais e interiores harmônicos onde funcionalidade, estética e bem-estar se encontram.
                         </p>
                     </div>
-                    <div className="aspect-4/3 min-[1020px]:aspect-square rounded-lg border border-black/10 overflow-hidden">
+                    <div className="relative aspect-4/3 min-[1020px]:aspect-square rounded-lg overflow-hidden">
+                        <Image
+                            src="/assets/images/about.jpg"
+                            alt="Leia Sena"
+                            fill
+                            className="object-cover"
+                        />
                     </div>
                 </div>
             </div>
