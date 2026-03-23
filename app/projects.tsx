@@ -35,9 +35,9 @@ export default function Projects() {
     const projects = getProjects();
 
     return (
-        <div className="flex flex-col items-center px-4 sm:px-8 min-[1020px]:px-12 pt-20 sm:pt-32 min-[1020px]:pt-8">
-            <div className="w-full max-w-7xl min-[1020px]:max-w-5xl xl:max-w-6xl">
-                <h2 className="text-xl sm:text-2xl md:text-3xl min-[1020px]:text-4xl font-light tracking-tight mb-6 sm:mb-8 min-[1020px]:mb-10">
+        <div className="flex flex-col justify-center h-full px-4 sm:px-8 min-[1020px]:flex min-[1020px]:items-center min-[1020px]:px-12 min-[1020px]:py-8 pt-20 sm:pt-32 min-[1020px]:pt-8">
+            <div className="w-full max-w-7xl">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl min-[1020px]:text-5xl font-light tracking-tight mb-6 sm:mb-8 min-[1020px]:mb-10 font-mono">
                     Projetos
                 </h2>
 
