@@ -1,43 +1,55 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import fs from "fs";
+import path from "path";
 import ProjectGallery from "./gallery";
 
-interface ProjectData {
-    title: string;
-    folder: string;
-    images: string[];
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
+
+function getProjectFolders(): string[] {
+    const dir = path.join(process.cwd(), "public", "assets", "projetos");
+    if (!fs.existsSync(dir)) return [];
+    return fs.readdirSync(dir).filter((name) =>
+        fs.statSync(path.join(dir, name)).isDirectory()
+    );
 }
 
-const projects: Record<string, ProjectData> = {
-    anny: {
-        title: "Anny",
-        folder: "Anny",
-        images: Array.from({ length: 12 }, (_, i) => `/assets/projetos/Anny/${String(i + 1).padStart(2, "0")}.png`),
-    },
-    debora: {
-        title: "Debora",
-        folder: "Debora",
-        images: Array.from({ length: 8 }, (_, i) => `/assets/projetos/Debora/${String(i + 1).padStart(2, "0")}.png`),
-    },
-    felipe: {
-        title: "Felipe",
-        folder: "Felipe",
-        images: Array.from({ length: 8 }, (_, i) => `/assets/projetos/Felipe/${String(i + 1).padStart(2, "0")}.png`),
-    },
-};
+function getProjectImages(folder: string): string[] {
+    const dir = path.join(process.cwd(), "public", "assets", "projetos", folder);
+    if (!fs.existsSync(dir)) return [];
+
+    return fs.readdirSync(dir)
+        .filter((f) => IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()))
+        .sort((a, b) => {
+            const numA = parseInt(a);
+            const numB = parseInt(b);
+            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+            if (!isNaN(numA)) return -1;
+            if (!isNaN(numB)) return 1;
+            return a.localeCompare(b);
+        })
+        .map((f) => `/assets/projetos/${folder}/${f}`);
+}
 
 export function generateStaticParams() {
-    return Object.keys(projects).map((slug) => ({ slug }));
+    return getProjectFolders().map((name) => ({
+        slug: name.toLowerCase(),
+    }));
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const project = projects[slug];
 
-    if (!project) notFound();
+    const folders = getProjectFolders();
+    const folder = folders.find((f) => f.toLowerCase() === slug);
 
-    const coverSrc = project.images[0];
-    const galleryImages = project.images.slice(1);
+    if (!folder) notFound();
+
+    const images = getProjectImages(folder);
+    if (images.length === 0) notFound();
+
+    const coverSrc = images[0];
+    const galleryImages = images.slice(1);
 
     return (
         <div className="min-h-screen bg-ice-white">
@@ -56,7 +68,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh]">
                 <Image
                     src={coverSrc}
-                    alt={project.title}
+                    alt={folder}
                     fill
                     priority
                     className="object-cover"
@@ -69,13 +81,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     <aside className="min-[1020px]:col-span-4 xl:col-span-3">
                         <div className="min-[1020px]:sticky min-[1020px]:top-20">
                             <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight">
-                                {project.title}
+                                {folder}
                             </h1>
                         </div>
                     </aside>
 
                     <div className="min-[1020px]:col-span-8 xl:col-span-9">
-                        <ProjectGallery images={galleryImages} title={project.title} />
+                        <ProjectGallery images={galleryImages} title={folder} />
                     </div>
                 </div>
             </div>

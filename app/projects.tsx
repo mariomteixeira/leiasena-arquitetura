@@ -1,13 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
+import fs from "fs";
+import path from "path";
 
-const projects = [
-    { slug: "anny", title: "Anny", cover: "/assets/projetos/Anny/01.png" },
-    { slug: "debora", title: "Debora", cover: "/assets/projetos/Debora/01.png" },
-    { slug: "felipe", title: "Felipe", cover: "/assets/projetos/Felipe/01.png" },
-];
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
+
+function getProjects() {
+    const projectsDir = path.join(process.cwd(), "public", "assets", "projetos");
+
+    if (!fs.existsSync(projectsDir)) return [];
+
+    return fs.readdirSync(projectsDir)
+        .filter((name) => {
+            const full = path.join(projectsDir, name);
+            return fs.statSync(full).isDirectory();
+        })
+        .filter((name) => {
+            const files = fs.readdirSync(path.join(projectsDir, name));
+            return files.some((f) => /^01\.(png|jpg|jpeg|webp|avif)$/i.test(f));
+        })
+        .map((name) => {
+            const files = fs.readdirSync(path.join(projectsDir, name));
+            const cover = files.find((f) => f.startsWith("01.") && IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()));
+            return {
+                slug: name.toLowerCase(),
+                title: name,
+                cover: `/assets/projetos/${name}/${cover}`,
+            };
+        })
+        .sort((a, b) => a.title.localeCompare(b.title));
+}
 
 export default function Projects() {
+    const projects = getProjects();
+
     return (
         <div className="flex flex-col items-center px-4 sm:px-8 min-[1020px]:px-12 pt-20 sm:pt-32 min-[1020px]:pt-8">
             <div className="w-full max-w-7xl min-[1020px]:max-w-5xl xl:max-w-6xl">
