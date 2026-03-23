@@ -19,7 +19,7 @@ export default function App() {
                 <section id="about" className="min-h-screen">
                     <About />
                 </section>
-                <section id="contact" className="min-h-screen">
+                <section id="contact" className="py-20 sm:py-28 min-[1020px]:py-32">
                     <Contact />
                 </section>
             </main>
