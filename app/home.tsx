@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import HomeCarousel from "./components/home-carousel";
+import HomeCarousel from "./_components/home-carousel";
 
 const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
 
