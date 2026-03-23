@@ -1,55 +1,20 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import fs from "fs";
-import path from "path";
 import ProjectGallery from "../../_components/gallery";
-
-const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
-
-function getProjectFolders(): string[] {
-    const dir = path.join(process.cwd(), "public", "assets", "projetos");
-    if (!fs.existsSync(dir)) return [];
-    return fs.readdirSync(dir).filter((name) =>
-        fs.statSync(path.join(dir, name)).isDirectory()
-    );
-}
-
-function getProjectImages(folder: string): string[] {
-    const dir = path.join(process.cwd(), "public", "assets", "projetos", folder);
-    if (!fs.existsSync(dir)) return [];
-
-    return fs.readdirSync(dir)
-        .filter((f) => IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()))
-        .sort((a, b) => {
-            const numA = parseInt(a);
-            const numB = parseInt(b);
-            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-            if (!isNaN(numA)) return -1;
-            if (!isNaN(numB)) return 1;
-            return a.localeCompare(b);
-        })
-        .map((f) => `/assets/projetos/${folder}/${f}`);
-}
+import { projects } from "../../_lib/projects";
 
 export function generateStaticParams() {
-    return getProjectFolders().map((name) => ({
-        slug: name.toLowerCase(),
-    }));
+    return projects.map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
+    const project = projects.find((p) => p.slug === slug);
 
-    const folders = getProjectFolders();
-    const folder = folders.find((f) => f.toLowerCase() === slug);
+    if (!project) notFound();
 
-    if (!folder) notFound();
-
-    const images = getProjectImages(folder);
-    if (images.length === 0) notFound();
-
-    const coverSrc = images[0];
-    const galleryImages = images.slice(1);
+    const coverSrc = project.images[0];
+    const galleryImages = project.images.slice(1);
 
     return (
         <div className="min-h-screen bg-ice-white">
@@ -68,7 +33,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh]">
                 <Image
                     src={coverSrc}
-                    alt={folder}
+                    alt={project.title}
                     fill
                     priority
                     className="object-cover"
@@ -81,13 +46,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                     <aside className="min-[1020px]:col-span-4 xl:col-span-3">
                         <div className="min-[1020px]:sticky min-[1020px]:top-20">
                             <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight">
-                                {folder}
+                                {project.title}
                             </h1>
                         </div>
                     </aside>
 
                     <div className="min-[1020px]:col-span-8 xl:col-span-9">
-                        <ProjectGallery images={galleryImages} title={folder} />
+                        <ProjectGallery images={galleryImages} title={project.title} />
                     </div>
                 </div>
             </div>

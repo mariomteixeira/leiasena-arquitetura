@@ -1,39 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import fs from "fs";
-import path from "path";
-
-const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
-
-function getProjects() {
-    const projectsDir = path.join(process.cwd(), "public", "assets", "projetos");
-
-    if (!fs.existsSync(projectsDir)) return [];
-
-    return fs.readdirSync(projectsDir)
-        .filter((name) => {
-            const full = path.join(projectsDir, name);
-            return fs.statSync(full).isDirectory();
-        })
-        .filter((name) => {
-            const files = fs.readdirSync(path.join(projectsDir, name));
-            return files.some((f) => /^01\.(png|jpg|jpeg|webp|avif)$/i.test(f));
-        })
-        .map((name) => {
-            const files = fs.readdirSync(path.join(projectsDir, name));
-            const cover = files.find((f) => f.startsWith("01.") && IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()));
-            return {
-                slug: name.toLowerCase(),
-                title: name,
-                cover: `/assets/projetos/${name}/${cover}`,
-            };
-        })
-        .sort((a, b) => a.title.localeCompare(b.title));
-}
+import { projects } from "../_lib/projects";
 
 export default function Projects() {
-    const projects = getProjects();
-
     return (
         <div className="flex flex-col justify-center h-full px-4 sm:px-8 min-[1020px]:flex min-[1020px]:items-center min-[1020px]:px-12 min-[1020px]:py-8 pt-20 sm:pt-32 min-[1020px]:pt-8">
             <div className="w-full max-w-7xl">
