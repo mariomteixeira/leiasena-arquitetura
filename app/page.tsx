@@ -3,12 +3,13 @@ import Home from "./home";
 import Projects from "./projects";
 import Contact from "./contact";
 import About from "./about";
+import ScrollToTop from "./scroll-to-top";
 
 export default function App() {
     return (
         <>
             <Navbar />
-            <main>
+            <main className="min-[1020px]:pr-32 xl:pr-40">
                 <section id="home" className="h-screen">
                     <Home />
                 </section>
@@ -22,6 +23,7 @@ export default function App() {
                     <Contact />
                 </section>
             </main>
+            <ScrollToTop />
         </>
     );
 }

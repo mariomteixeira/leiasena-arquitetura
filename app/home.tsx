@@ -5,7 +5,8 @@ import Image from "next/image";
 
 const heroImages = [
     "/assets/projetos/Anny/01.png",
-    "/assets/projetos/Samara/varanda.jpg",
+    "/assets/projetos/Felipe/01.png",
+    "/assets/projetos/Debora/01.png",
 ];
 
 export default function Home() {
@@ -19,9 +20,9 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="relative h-full lg:flex lg:flex-col lg:items-center lg:justify-center lg:px-12 lg:py-8">
+        <div className="relative h-full min-[1020px]:flex min-[1020px]:flex-col min-[1020px]:items-center min-[1020px]:justify-center min-[1020px]:px-12 min-[1020px]:py-8">
             {/* Mobile/tablet: full bleed hero */}
-            <div className="relative h-full lg:hidden">
+            <div className="relative h-full min-[1020px]:hidden">
                 {heroImages.map((src, i) => (
                     <Image
                         key={src}
@@ -54,7 +55,7 @@ export default function Home() {
             </div>
 
             {/* Desktop: contained hero */}
-            <div className="hidden lg:block w-full max-w-7xl">
+            <div className="hidden min-[1020px]:block w-full max-w-7xl">
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden">
                     {heroImages.map((src, i) => (
                         <Image

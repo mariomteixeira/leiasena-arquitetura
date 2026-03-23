@@ -34,7 +34,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed right-0 top-0 z-50 hidden lg:flex flex-col items-center gap-14 px-8 xl:px-15 pt-24">
+            <nav className="fixed right-0 top-0 z-50 hidden min-[1020px]:flex flex-col items-center gap-14 px-8 xl:px-15 pt-24">
                 <a href="#home">
                     <Image
                         src="/assets/logo/svg/Vertical/VERTICAL-NEG1.svg"
@@ -59,7 +59,7 @@ export default function Navbar() {
                 </ul>
             </nav>
 
-            <header className="fixed top-0 right-0 z-50 lg:hidden p-4">
+            <header className="fixed top-0 right-0 z-50 min-[1020px]:hidden p-4">
                 <div className="relative">
                     <button
                         ref={buttonRef}

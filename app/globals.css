@@ -50,6 +50,13 @@ html.lenis, html.lenis body {
   border-radius: 0;
 }
 
+/* Mobile: hover text larger */
+@media (max-width: 639px) {
+  .project-card h3 {
+    font-size: 0.875rem;
+  }
+}
+
 /* Mobile: 3 cols x 4 rows */
 @media (max-width: 639px) {
   .project-card:first-child { border-top-left-radius: 0.75rem; }
