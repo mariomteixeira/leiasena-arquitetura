@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import fs from "fs";
 import path from "path";
-import ProjectGallery from "./gallery";
+import ProjectGallery from "../../components/gallery";
 
 const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
 

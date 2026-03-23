@@ -1,9 +1,9 @@
-import Navbar from "./navbar";
+import Navbar from "./components/navbar";
 import Home from "./home";
-import Projects from "./projects";
-import Contact from "./contact";
-import About from "./about";
-import ScrollToTop from "./scroll-to-top";
+import Projects from "./components/projects";
+import Contact from "./components/contact";
+import About from "./components/about";
+import ScrollToTop from "./components/scroll-to-top";
 
 export default function App() {
     return (
