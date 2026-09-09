@@ -12,7 +12,6 @@ export const bio = {
     role: "Arquiteta e urbanista",
     text: "Registrada no CAU, com pós-graduação em Design de Interiores e Experiência do Ambiente (IPOG). Realizo projetos tanto residenciais quanto comerciais. Produzo as imagens 3D que mostram o resultado antes da sua obra começar.",
     photo: "/assets/images/about.jpg",
-    logo: "/assets/logo/svg/svgs/vertical-azul.svg",
     links: [
         { id: "instagram", label: "Instagram", href: "https://www.instagram.com/arqleiasena/", external: true },
         { id: "portfolio", label: "Portfólio", href: "https://drive.google.com/file/d/1IKuKRY1vfrqR_YlocuZg2FrAiIeTfrJW/view", external: true },
