@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-09T00:00:00Z",
+  "title": "Design System: Léia Sena Arquitetura",
+  "extensions": {
+    "colorMeta": {
+      "navy": { "role": "primary", "displayName": "Brand Navy", "canonical": "#313c59", "tonalRamp": ["oklch(18% 0.05 272)", "oklch(26% 0.055 272)", "oklch(34% 0.055 272)", "oklch(44% 0.055 272)", "oklch(56% 0.05 272)", "oklch(70% 0.04 272)", "oklch(84% 0.025 272)", "oklch(95% 0.01 272)"] },
+      "navy-muted": { "role": "primary", "displayName": "Navy Muted (80%)", "canonical": "rgba(49, 60, 89, 0.8)", "tonalRamp": ["oklch(18% 0.05 272)", "oklch(26% 0.055 272)", "oklch(34% 0.055 272)", "oklch(44% 0.055 272)", "oklch(56% 0.05 272)", "oklch(70% 0.04 272)", "oklch(84% 0.025 272)", "oklch(95% 0.01 272)"] },
+      "cream": { "role": "neutral", "displayName": "Cream", "canonical": "#F4F1EA", "tonalRamp": ["oklch(18% 0.012 85)", "oklch(30% 0.014 85)", "oklch(45% 0.016 85)", "oklch(60% 0.018 85)", "oklch(74% 0.016 85)", "oklch(85% 0.014 85)", "oklch(91% 0.012 85)", "oklch(96% 0.01 85)"] },
+      "cream-outline": { "role": "neutral", "displayName": "Cream Outline (55%)", "canonical": "rgba(244, 241, 234, 0.55)", "tonalRamp": ["oklch(18% 0.012 85)", "oklch(30% 0.014 85)", "oklch(45% 0.016 85)", "oklch(60% 0.018 85)", "oklch(74% 0.016 85)", "oklch(85% 0.014 85)", "oklch(91% 0.012 85)", "oklch(96% 0.01 85)"] },
+      "ice-white": { "role": "neutral", "displayName": "Ice White (incumbent site ground)", "canonical": "#ddd9ce", "tonalRamp": ["oklch(16% 0.01 85)", "oklch(28% 0.012 85)", "oklch(42% 0.014 85)", "oklch(56% 0.015 85)", "oklch(70% 0.014 85)", "oklch(80% 0.013 85)", "oklch(88% 0.012 85)", "oklch(95% 0.008 85)"] },
+      "near-black": { "role": "neutral", "displayName": "Near Black (incumbent site foreground)", "canonical": "#171717", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(36% 0 0)", "oklch(48% 0 0)", "oklch(60% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "The architect's title under the portrait; one per surface." },
+      "title": { "displayName": "Title (pill label)", "purpose": "Link labels centered inside navy pills; tracking opened so Bodoni hairlines survive reversal." },
+      "body": { "displayName": "Body", "purpose": "The single credentials paragraph, navy at 80%, centered in the 420px column." }
+    },
+    "shadows": [
+      { "name": "pill-rest", "value": "0 14px 28px -14px rgba(49, 60, 89, 0.6)", "purpose": "Under every navy pill, rest and hover; the only shadow in the system, tinted with the navy itself." }
+    ],
+    "motion": [
+      { "name": "ease-entrance", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Easing for both entrance keyframes (.bio-rise, .bio-draw)." },
+      { "name": "duration-rise", "value": "900ms", "purpose": ".bio-rise: opacity 0 / translateY(18px) to rest, fill-mode backwards." },
+      { "name": "duration-draw", "value": "1400ms", "purpose": ".bio-draw: stroke-dashoffset 1 to 0 on pathLength=1 circles, fill-mode backwards." },
+      { "name": "stagger", "value": "--d: 0 / 120 / 200 / 260 / 300 / 380+90n ms", "purpose": "Per-element delay via the --d custom property (delay() helper): logo, portrait, headline, body, ring, pills." },
+      { "name": "duration-state", "value": "300ms ease-out", "purpose": "Pill hover lift, icon-disc color inversion, chevron nudge." },
+      { "name": "reduced-motion", "value": "[class*=\"bio-\"] { animation: none !important }", "purpose": "prefers-reduced-motion: reduce shows the surface at rest." }
+    ],
+    "breakpoints": [],
+    "incumbentWorld": {
+      "note": "Observed, not canonized. The rest of the site (app/page.tsx, app/_components/*) is a separate incumbent world: ice-white #ddd9ce ground, near-black #171717 foreground, Geist Mono section headings (font-light, tracking-tight, 2xl-5xl), uppercase tracking-widest labels at foreground/50, translucent white overlays (white/60, white/30), Tailwind shadow-lg/2xl, rounded-lg submit button. The root layout does not apply --font-sans, so site body text currently renders the platform default sans; only /bio applies font-sans. Lenis smooth scroll wraps every route including /bio."
+    }
+  },
+  "components": [
+    {
+      "name": "Pill Link",
+      "kind": "button",
+      "refersTo": "pill-link",
+      "description": "Full-width navy capsule with outlined icon disc, centered Bodoni label, and chevron; the surface's only interactive element.",
+      "html": "<a class=\"ds-pill\" href=\"#\"><span class=\"ds-pill-disc\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><circle cx=\"17.4\" cy=\"6.6\" r=\"1\" fill=\"currentColor\" stroke=\"none\"/></svg></span><span class=\"ds-pill-label\">Instagram</span><svg class=\"ds-pill-chevron\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 6 6 6-6 6\"/></svg></a>",
+      "css": ".ds-pill { position: relative; display: flex; align-items: center; width: 100%; max-width: 420px; height: 60px; padding: 0 52px 0 12px; border-radius: 9999px; background: var(--color-navy, #313c59); color: #F4F1EA; text-decoration: none; box-shadow: 0 14px 28px -14px rgba(49, 60, 89, 0.6); transition: transform 300ms ease-out; } .ds-pill:hover { transform: translateY(-2px); } .ds-pill:active { transform: scale(0.97); } .ds-pill:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; } .ds-pill-disc { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; border: 1px solid rgba(244, 241, 234, 0.55); transition: background-color 300ms, color 300ms; } .ds-pill-disc svg { width: 20px; height: 20px; } .ds-pill:hover .ds-pill-disc { background: #F4F1EA; color: var(--color-navy, #313c59); } .ds-pill-label { flex: 1; padding: 0 8px; text-align: center; font-family: 'Bodoni Moda', Didot, 'Bodoni 72', serif; font-size: 1.3rem; letter-spacing: 0.025em; } .ds-pill-chevron { position: absolute; right: 20px; width: 20px; height: 20px; opacity: 0.6; transition: transform 300ms ease-out; } .ds-pill:hover .ds-pill-chevron { transform: translateX(4px); }"
+    },
+    {
+      "name": "Portrait with Ring",
+      "kind": "custom",
+      "refersTo": "avatar",
+      "description": "112px circular B&W portrait with a navy hairline ring 10px outside it, drawn on entrance.",
+      "html": "<div class=\"ds-portrait\"><svg class=\"ds-portrait-ring\" viewBox=\"0 0 100 100\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"50\" cy=\"50\" r=\"48.75\" stroke=\"currentColor\" stroke-width=\"1.5\" pathLength=\"1\"/></svg><div class=\"ds-portrait-img\"></div></div>",
+      "css": ".ds-portrait { position: relative; width: 112px; height: 112px; color: var(--color-navy, #313c59); } .ds-portrait-ring { position: absolute; inset: -10px; width: calc(100% + 20px); height: calc(100% + 20px); transform: rotate(-90deg); } .ds-portrait-ring circle { stroke-dasharray: 1; animation: ds-draw 1400ms cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards; } @keyframes ds-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } } .ds-portrait-img { width: 100%; height: 100%; border-radius: 9999px; overflow: hidden; background: #8a8a86 center 28% / cover no-repeat; }"
+    },
+    {
+      "name": "Logo (masked)",
+      "kind": "custom",
+      "refersTo": "logo",
+      "description": "Vertical lockup rendered as a CSS mask on a currentColor block so it takes the surface's ink.",
+      "html": "<span class=\"ds-logo\" role=\"img\" aria-label=\"Léia Sena Arquitetura\"></span>",
+      "css": ".ds-logo { display: block; width: 112px; aspect-ratio: 5906 / 4556; background: currentColor; color: var(--color-navy, #313c59); -webkit-mask: url(/assets/logo/svg/svgs/vertical-azul.svg) center / contain no-repeat; mask: url(/assets/logo/svg/svgs/vertical-azul.svg) center / contain no-repeat; }"
+    },
+    {
+      "name": "Identity Stack",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Headline in Bodoni Moda over the credentials paragraph in Geist Sans at navy 80%, centered.",
+      "html": "<div class=\"ds-identity\"><h1 class=\"ds-identity-h\">Arquiteta e urbanista</h1><p class=\"ds-identity-p\">Registrada no CAU, com pós-graduação em Design de Interiores e Experiência do Ambiente (IPOG).</p></div>",
+      "css": ".ds-identity { max-width: 420px; text-align: center; color: var(--color-navy, #313c59); } .ds-identity-h { margin: 0; font-family: 'Bodoni Moda', Didot, 'Bodoni 72', serif; font-weight: 400; font-size: 1.55rem; line-height: 1.25; letter-spacing: -0.025em; } .ds-identity-p { margin: 12px 0 0; font-family: Geist, system-ui, sans-serif; font-size: 14.5px; line-height: 1.55; color: rgba(49, 60, 89, 0.8); }"
+    },
+    {
+      "name": "Entrance Rise",
+      "kind": "custom",
+      "refersTo": "pill-link",
+      "description": "Shared entrance: 18px rise and fade, 900ms, staggered by --d, backwards fill so hover transforms survive.",
+      "html": "<div class=\"ds-rise\" style=\"--d: 120ms\"><a class=\"ds-rise-demo\" href=\"#\">Portfólio</a></div>",
+      "css": ".ds-rise { animation: ds-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: var(--d, 0ms); } @keyframes ds-rise { from { opacity: 0; transform: translateY(18px); } } .ds-rise-demo { display: flex; align-items: center; justify-content: center; height: 60px; border-radius: 9999px; background: var(--color-navy, #313c59); color: #F4F1EA; font-family: 'Bodoni Moda', Didot, serif; font-size: 1.3rem; letter-spacing: 0.025em; text-decoration: none; } @media (prefers-reduced-motion: reduce) { .ds-rise { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Letterpressed Calling Card",
+    "overview": "The system is the brand's own stationery turned into a screen: a warm cream field, a single committed navy taken from the logo, and Didone lettering (Bodoni Moda) that echoes the logo's own serifs. Nothing is added that the logo does not already contain. Depth comes from ink on paper, not from surfaces stacked on surfaces: there are no cards, no gradients, no glass, no second accent. The one signature object is the full-width navy pill, a solid stamp of ink with a circled outline icon at the left, a serif label centered, and a chevron at the right.\n\nDensity is low and deliberate. One column, one centered stack, everything sized to fit a 390×844 or 360×780 phone without scrolling. The page arrives once, as a single orchestrated entrance (elements rise 18px in sequence while the portrait ring draws itself), then goes still; motion afterward is limited to small tactile responses on the pills. Type has two voices only: Bodoni for the words that identify the architect (her title, the link labels) and Geist Sans for the one paragraph of running text.\n\nConfirmed rejections, evidenced by the build: the generic white-card Linktree list; a second accent color; icon glyph fonts; any font besides Bodoni Moda and Geist.",
+    "keyCharacteristics": [
+      "Cream ground, navy ink, cream reversed out of navy; three combinations and no more.",
+      "Bodoni Moda for identity and labels, Geist Sans for body; no uppercase display, no eyebrows.",
+      "Fully round geometry: circular portrait, circular ring, circular icon discs, capsule pills.",
+      "Flat surfaces; the pill's soft navy-tinted shadow is the only depth in the system.",
+      "One staggered entrance (900ms rise, 1400ms ring draw), then rest; reduced-motion disables all of it.",
+      "Safe-area-aware single column, max width 420px, touch targets 60px tall."
+    ],
+    "rules": [
+      { "name": "The One Ink Rule", "body": "Navy is the only chromatic color on the surface. Hierarchy is made with opacity of navy (80% for body) or of cream (55% for outlines, 60% for the chevron), never with a second hue or a neutral gray.", "section": "colors" },
+      { "name": "The Reversal Rule", "body": "Cream and navy swap roles at the component boundary and nowhere else: cream ground carries navy elements; a navy pill carries cream text and icons; the hovered icon disc reverses again to cream-on-navy. No tints, no mid-tones, no gradients between them.", "section": "colors" },
+      { "name": "The Current-Color Rule", "body": "Brand assets take their color from context. The logo is a CSS mask filled with currentColor; the portrait ring is an SVG stroke in currentColor; icons are stroked in currentColor. Never ship a logo or icon with a baked-in fill.", "section": "colors" },
+      { "name": "The Two Voices Rule", "body": "Bodoni Moda is for identity and calls to action; Geist Sans is for running text. Do not set body copy in Bodoni, and do not set a label or heading in Geist on this surface.", "section": "typography" },
+      { "name": "The Scoped Sans Rule", "body": "--font-sans maps to Geist, but the root layout never applies it; only /bio opts in with font-sans on its layout wrapper. Observed fact: the rest of the site currently renders the platform default sans for body text. Any new surface that wants Geist must apply font-sans itself.", "section": "typography" },
+      { "name": "The Ink Shadow Rule", "body": "If a surface needs a shadow, it is the pill shadow, tinted with navy. No black shadows, no hard offsets, no shadows on text, logo, or portrait.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use only navy (#313c59) and cream (#F4F1EA), with opacity steps of each for hierarchy (navy 80% body, cream 55% outlines, cream 60% chevron).",
+      "Do set identity text and link labels in Bodoni Moda (1.55rem headline, 1.3rem labels) and running text in Geist Sans at 14.5px/1.55.",
+      "Do keep every interactive target a 60px-tall full-width capsule with the icon-disc / centered-label / chevron anatomy.",
+      "Do render the logo and icons in currentColor (CSS mask, SVG stroke) so they take the surface's ink.",
+      "Do keep the whole surface inside one 420px column that fits 390×844 and 360×780 without scrolling, with safe-area padding on both vertical edges.",
+      "Do stage entrance motion through --d and the .bio-rise / .bio-draw classes with backwards fill, and honor prefers-reduced-motion.",
+      "Do give keyboard focus a 2px currentColor outline offset 3px."
+    ],
+    "donts": [
+      "Don't introduce a second hue, a neutral gray, a gradient, or a translucent \"glass\" surface; the build has none.",
+      "Don't put content in cards or bordered containers on this surface; the ground carries everything directly.",
+      "Don't use a black or hard-offset shadow; the only shadow is the navy-tinted Pill Rest.",
+      "Don't set Bodoni in uppercase or add an eyebrow/kicker above the headline; the identity stack is logo → portrait → title → paragraph, nothing more.",
+      "Don't pull icons from an icon font or a package; author them on the 24px / 1.75-stroke / round-cap grid in icons.tsx.",
+      "Don't reuse the incumbent site's ice-white ground (#ddd9ce) or near-black text on a /bio-world surface; they are the sibling world, not this one."
+    ]
+  }
+}

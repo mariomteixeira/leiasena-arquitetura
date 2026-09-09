@@ -1,0 +1,17 @@
+/* /bio — entrance choreography. Every class reads `--d` for stagger.
+   Fill-mode is `backwards` so the resting state is the element's own CSS
+   (hover / active transforms keep working after the entrance). */
+
+.bio-rise { animation: bio-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes bio-rise { from { opacity: 0; transform: translateY(18px); } }
+
+/* Stroke draw: element needs pathLength="1". Resting state is the default dashoffset 0. */
+.bio-draw { stroke-dasharray: 1; animation: bio-draw 1400ms cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes bio-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* Keyboard focus, in the surface's own color */
+main a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+    [class*="bio-"] { animation: none !important; }
+}
