@@ -1,0 +1,235 @@
+/* v15 "Marquise · Trilho" — a câmera caminha sob a marquise. Creme, navio, retângulos arredondados. */
+
+.tr {
+    --tr-line: rgba(49, 60, 89, 0.24);
+    --tr-line-soft: rgba(49, 60, 89, 0.12);
+    --tr-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    /* mesmo raio dos cards do trilho, em px na escala desktop */
+    --tr-radius: 20px;
+}
+
+/* ---- cantos arredondados: o raio do mundo ---- */
+.tr-round {
+    border-radius: var(--tr-radius);
+    overflow: hidden;
+}
+@media (max-width: 767px) {
+    .tr {
+        --tr-radius: 16px;
+    }
+}
+
+/* ---- arcos (fora do trilho: hero, retrato, painel do contato) ---- */
+.tr-arch {
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+}
+.tr-arch-panel {
+    border-radius: 50% 50% 0 0 / 5rem 5rem 0 0;
+}
+@media (min-width: 768px) {
+    .tr-arch-panel {
+        border-radius: 50% 50% 0 0 / 7.5rem 7.5rem 0 0;
+    }
+}
+
+/* ---- palco do trilho ---- */
+.tr-stage {
+    position: relative;
+    width: 100%;
+    height: clamp(19rem, 46vw, 27rem);
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+@media (max-width: 767px) {
+    .tr-stage {
+        height: 16rem;
+    }
+}
+.tr-stage[data-dragging="true"] {
+    cursor: grabbing;
+}
+.tr-stage:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 6px;
+    border-radius: 4px;
+}
+
+.tr-fade {
+    transition: opacity 700ms var(--tr-ease);
+}
+
+/* ---- botões de passo ---- */
+.tr-step {
+    display: inline-flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--tr-line);
+    border-radius: 999px;
+    color: #313c59;
+    background: transparent;
+    transition: background-color 380ms var(--tr-ease), border-color 380ms var(--tr-ease), color 380ms var(--tr-ease);
+}
+.tr-step:hover:not(:disabled) {
+    background: #313c59;
+    border-color: #313c59;
+    color: #f4f1ea;
+}
+.tr-step:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* ---- trilho: fita de marcadores ---- */
+.tr-tick {
+    height: 1px;
+    width: 0.85rem;
+    background: rgba(49, 60, 89, 0.28);
+    transition: background-color 520ms var(--tr-ease), transform 520ms var(--tr-ease);
+    transform-origin: center;
+}
+.tr-tick[data-on="true"] {
+    background: #313c59;
+    transform: scaleY(3);
+}
+
+/* ---- links ---- */
+.tr-link {
+    position: relative;
+}
+.tr-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 620ms var(--tr-ease);
+}
+.tr-link:hover::after,
+.tr-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.tr-cta {
+    transition: background-color 420ms var(--tr-ease), color 420ms var(--tr-ease), box-shadow 420ms var(--tr-ease);
+    box-shadow: 0 10px 24px -18px rgba(49, 60, 89, 0.9);
+}
+.tr-cta:hover {
+    box-shadow: 0 16px 34px -18px rgba(49, 60, 89, 0.95);
+}
+
+/* ---- hairlines ---- */
+.tr-hair {
+    border-top: 1px solid var(--tr-line);
+}
+.tr-hair-soft {
+    border-top: 1px solid var(--tr-line-soft);
+}
+.tr-hair-b {
+    border-bottom: 1px solid var(--tr-line);
+}
+
+/* ---- zoom suave nas imagens em HTML ---- */
+.tr-zoom img {
+    transition: transform 1200ms var(--tr-ease);
+}
+.tr-card:hover .tr-zoom img,
+.tr-card:focus-visible .tr-zoom img {
+    transform: scale(1.04);
+}
+
+/* ---- formulário ---- */
+.tr-field {
+    position: relative;
+}
+.tr-input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--tr-line);
+    border-radius: 0;
+    padding: 0.8rem 0.15rem;
+    color: #313c59;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 420ms var(--tr-ease);
+}
+.tr-input::placeholder {
+    color: rgba(49, 60, 89, 0.5);
+}
+.tr-input:focus {
+    outline: none;
+    border-bottom-color: #313c59;
+}
+.tr-input:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 4px;
+}
+.tr-input[data-state="valid"] {
+    border-bottom-color: rgba(49, 60, 89, 0.8);
+}
+.tr-input[data-state="error"] {
+    border-bottom-style: dashed;
+    border-bottom-color: #313c59;
+}
+.tr-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+}
+.tr-field-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: #313c59;
+}
+
+/* ---- painel do contato ---- */
+.tr-panel {
+    border: 1px solid rgba(49, 60, 89, 0.2);
+    background: #f4f1ea;
+    box-shadow: 0 30px 70px -50px rgba(49, 60, 89, 0.85);
+}
+
+/* ---- menu mobile ---- */
+.tr-menu {
+    animation: tr-menu-in 520ms var(--tr-ease) both;
+}
+@keyframes tr-menu-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.tr-menu-item {
+    animation: tr-item-in 700ms var(--tr-ease) both;
+    animation-delay: var(--d, 0ms);
+}
+@keyframes tr-item-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tr-zoom img,
+    .tr-link::after,
+    .tr-cta,
+    .tr-fade,
+    .tr-tick,
+    .tr-step {
+        transition: none;
+    }
+    .tr-menu,
+    .tr-menu-item {
+        animation: none;
+    }
+}

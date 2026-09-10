@@ -1,0 +1,291 @@
+/* v13 "Marquise · Arco" — o retângulo arredondado e o arco são a mesma forma. */
+
+.ac {
+    --ac-line: rgba(49, 60, 89, 0.24);
+    --ac-line-soft: rgba(49, 60, 89, 0.12);
+    --ac-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ac-r: 20px;
+}
+
+/* ---------------------------------------------------------------- arcos fixos */
+.ac-arch {
+    border-radius: 999px 999px var(--ac-r) var(--ac-r);
+    overflow: hidden;
+}
+.ac-arch-wide {
+    border-radius: 50% 50% var(--ac-r) var(--ac-r) / 34% 34% var(--ac-r) var(--ac-r);
+    overflow: hidden;
+}
+/* o arco do hero: marquise larga no telefone, arco pleno ao lado do título */
+.ac-hero-arch {
+    aspect-ratio: 16 / 11;
+    border-radius: 50% 50% var(--ac-r) var(--ac-r) / 40% 40% var(--ac-r) var(--ac-r);
+    overflow: hidden;
+}
+@media (min-width: 1024px) {
+    .ac-hero-arch {
+        aspect-ratio: 1 / 1;
+        border-radius: 999px 999px var(--ac-r) var(--ac-r);
+    }
+}
+
+.ac-panel {
+    border: 1px solid rgba(49, 60, 89, 0.2);
+    background: #f4f1ea;
+    border-radius: 50% 50% var(--ac-r) var(--ac-r) / 5rem 5rem var(--ac-r) var(--ac-r);
+    box-shadow: 0 30px 70px -50px rgba(49, 60, 89, 0.85);
+}
+@media (min-width: 768px) {
+    .ac-panel {
+        border-radius: 50% 50% var(--ac-r) var(--ac-r) / 7.5rem 7.5rem var(--ac-r) var(--ac-r);
+    }
+}
+
+/* --------------------------------------------------------------- o carrossel */
+.ac-stage {
+    --ac-base: clamp(200px, 64vw, 330px);
+    --ac-ang: 0.5deg;
+    position: relative;
+    height: calc(var(--ac-base) * 1.2 + 56px);
+    perspective: 1100px;
+    perspective-origin: 50% 44%;
+    touch-action: pan-y;
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+}
+@media (min-width: 768px) {
+    .ac-stage {
+        --ac-base: clamp(250px, 28vw, 400px);
+        --ac-ang: 1deg;
+        perspective: 1500px;
+    }
+}
+.ac-stage[data-dragging="true"] {
+    cursor: grabbing;
+}
+
+.ac-probe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--ac-base);
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Os cards sao filhos DIRETOS do palco: um unico contexto 3D achatado com a
+   perspectiva do pai. Um wrapper com `preserve-3d` no meio quebra o hit test
+   do Chromium (so o card sem rotacao respondia ao clique), entao a rotacao de
+   camera e composta na matriz de cada card. */
+
+/* O card. Em repouso: retângulo arredondado de 20px na proporção da imagem
+   comprimida. No centro: proporção natural + arco de marquise no topo.
+   --t (0..1) é escrito a cada quadro pelo JS e move as DUAS coisas juntas. */
+.ac-card {
+    --t: 0;
+    --o: 1;
+    --om: 1;
+    --rx: calc(var(--ac-r) + var(--t) * (50% - var(--ac-r)));
+    --ry: calc(var(--ac-r) + var(--t) * (32% - var(--ac-r)));
+
+    position: absolute;
+    left: 50%;
+    bottom: 3rem;
+    display: block;
+    width: calc(var(--ac-base) * var(--w));
+    aspect-ratio: calc(var(--ar) * (1 + (1 - var(--t)) * 0.18));
+    background: #ddd9ce;
+    overflow: hidden;
+    opacity: var(--om);
+    border-radius: var(--rx) var(--rx) var(--ac-r) var(--ac-r) /
+        var(--ry) var(--ry) var(--ac-r) var(--ac-r);
+    box-shadow: 0 26px 48px -34px rgba(23, 23, 23, 0.55);
+    backface-visibility: hidden;
+    will-change: transform, aspect-ratio, border-radius;
+}
+@media (min-width: 768px) {
+    .ac-card {
+        opacity: var(--o);
+    }
+}
+.ac-card img {
+    object-fit: cover;
+    object-position: 50% 100%;
+}
+.ac-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(244, 241, 234, 0.35);
+    pointer-events: none;
+}
+.ac-card:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 6px;
+}
+
+/* legenda do card central */
+.ac-cap {
+    min-height: 5.5rem;
+}
+.ac-cap-in {
+    animation: ac-cap 620ms var(--ac-ease) both;
+}
+@keyframes ac-cap {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.ac-ctrl {
+    display: inline-flex;
+    height: 3rem;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ac-line);
+    border-radius: 999px 999px var(--ac-r) var(--ac-r);
+    color: #313c59;
+    transition: background-color 420ms var(--ac-ease), border-color 420ms var(--ac-ease);
+}
+.ac-ctrl:hover {
+    background: rgba(49, 60, 89, 0.08);
+    border-color: rgba(49, 60, 89, 0.5);
+}
+.ac-ctrl:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* -------------------------------------------------------------------- links */
+.ac-link {
+    position: relative;
+}
+.ac-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 620ms var(--ac-ease);
+}
+.ac-link:hover::after,
+.ac-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.ac-cta {
+    transition: background-color 420ms var(--ac-ease), box-shadow 420ms var(--ac-ease);
+    box-shadow: 0 10px 24px -18px rgba(49, 60, 89, 0.9);
+}
+.ac-cta:hover {
+    box-shadow: 0 16px 34px -18px rgba(49, 60, 89, 0.95);
+}
+
+/* ---------------------------------------------------------------- hairlines */
+.ac-hair {
+    border-top: 1px solid var(--ac-line);
+}
+.ac-hair-soft {
+    border-top: 1px solid var(--ac-line-soft);
+}
+.ac-hair-b {
+    border-bottom: 1px solid var(--ac-line);
+}
+
+/* -------------------------------------------------------------- formulário */
+.ac-field {
+    position: relative;
+}
+.ac-input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--ac-line);
+    border-radius: 0;
+    padding: 0.8rem 0.15rem;
+    color: #313c59;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 420ms var(--ac-ease);
+}
+.ac-input::placeholder {
+    color: rgba(49, 60, 89, 0.62);
+}
+.ac-input:focus {
+    outline: none;
+    border-bottom-color: #313c59;
+}
+.ac-input:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 4px;
+}
+.ac-input[data-state="valid"] {
+    border-bottom-color: rgba(49, 60, 89, 0.8);
+}
+.ac-input[data-state="error"] {
+    border-bottom-style: dashed;
+    border-bottom-color: #313c59;
+}
+.ac-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+}
+.ac-field-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: #313c59;
+}
+
+/* ------------------------------------------------------------- menu mobile */
+.ac-menu {
+    animation: ac-menu-in 520ms var(--ac-ease) both;
+}
+@keyframes ac-menu-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.ac-menu-item {
+    animation: ac-item-in 700ms var(--ac-ease) both;
+    animation-delay: var(--d, 0ms);
+}
+@keyframes ac-item-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ------------------------------------------------------------------- zoom */
+.ac-zoom img {
+    transition: transform 1200ms var(--ac-ease);
+}
+.ac-zoom:hover img {
+    transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ac-card {
+        will-change: auto;
+    }
+    .ac-zoom img,
+    .ac-link::after,
+    .ac-cta,
+    .ac-ctrl {
+        transition: none;
+    }
+    .ac-menu,
+    .ac-menu-item,
+    .ac-cap-in {
+        animation: none;
+    }
+}

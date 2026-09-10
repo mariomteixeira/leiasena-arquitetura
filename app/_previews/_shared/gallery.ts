@@ -20,7 +20,20 @@ export interface Shot {
     /** largura / altura */
     ratio: number;
     shape: Shape;
+    /**
+     * Serve de vitrine. As sete marcadas como `false` são ambientes de serviço
+     * (academia, lavanderia e lavabos) — continuam disponíveis na página do
+     * projeto, mas não abrem um carrossel na home.
+     */
+    featured: boolean;
 }
+
+/** `<pasta>/<índice>` dos ambientes de serviço, fora da vitrine. */
+const SERVICE_ROOMS = new Set([
+    "Anny/7", "Anny/10",
+    "Debora/5", "Debora/6",
+    "Gustavo/5", "Gustavo/6", "Gustavo/7",
+]);
 
 /** width,height por arquivo, na ordem 01..NN de cada pasta. */
 const DIMS: Record<string, [number, number][]> = {
@@ -66,23 +79,28 @@ export const SHOTS: Shot[] = projects.flatMap((p) => {
             height,
             ratio,
             shape: shapeOf(ratio),
+            featured: !SERVICE_ROOMS.has(`${folder}/${i + 1}`),
         };
     });
 });
 
 export const byProject = (slug: string) => SHOTS.filter((s) => s.slug === slug);
 export const byShape = (shape: Shape) => SHOTS.filter((s) => s.shape === shape);
+/** Só o que serve de vitrine. */
+export const FEATURED: Shot[] = SHOTS.filter((s) => s.featured);
 
 /**
  * Uma seleção variada para carrosséis: alterna projetos e formatos, começando
  * pelas capas. Devolve `count` imagens sem repetir.
+ *
+ * Só usa os ambientes de vitrine, e dentro de cada projeto tira primeiro os
+ * formatos incomuns — é o que faz a fita variar de largura.
  */
 export function mixedSelection(count = 14): Shot[] {
-    const covers = SHOTS.filter((s) => s.index === 1);
-    const rest = SHOTS.filter((s) => s.index !== 1);
+    const pool = FEATURED;
+    const covers = pool.filter((s) => s.index === 1);
     const buckets: Record<string, Shot[]> = {};
-    for (const s of rest) (buckets[s.slug] ??= []).push(s);
-    // dá prioridade a formatos incomuns, que é o que faz a fita variar
+    for (const s of pool.filter((s) => s.index !== 1)) (buckets[s.slug] ??= []).push(s);
     for (const slug of Object.keys(buckets)) {
         buckets[slug].sort((a, b) => {
             const rank = (s: Shot) => (s.shape === "wide" ? 2 : s.shape === "boxy" ? 1 : 0);

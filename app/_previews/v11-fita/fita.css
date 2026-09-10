@@ -1,0 +1,267 @@
+/* v11 "Marquise · Fita" — a marquise vista de perfil: uma fita de cards em arco. */
+
+.ft {
+    --ft-line: rgba(49, 60, 89, 0.24);
+    --ft-line-soft: rgba(49, 60, 89, 0.12);
+    --ft-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ft-radius: 22px;
+}
+
+/* ---- arcos (o mundo Marquise segue fora da fita) ---- */
+.ft-arch {
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+}
+.ft-arch-wide {
+    border-radius: 50% 50% 0 0 / 58% 58% 0 0;
+    overflow: hidden;
+}
+.ft-arch-panel {
+    border-radius: 50% 50% 0 0 / 5rem 5rem 0 0;
+}
+@media (min-width: 768px) {
+    .ft-arch-panel {
+        border-radius: 50% 50% 0 0 / 7.5rem 7.5rem 0 0;
+    }
+}
+
+/* ---------------------------------------------------------------- a fita ---- */
+.ft-strip {
+    --ft-h: 136px;
+    --ft-gap: 12px;
+    --ft-bleed: 54px;
+    position: relative;
+    width: 100%;
+    overflow-x: clip;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    perspective: 1400px;
+    perspective-origin: 50% 50%;
+}
+@media (min-width: 768px) {
+    .ft-strip {
+        --ft-h: 224px;
+        --ft-gap: 22px;
+        --ft-bleed: 96px;
+    }
+}
+.ft-strip[data-drag="true"] {
+    cursor: grabbing;
+}
+
+.ft-yaw {
+    height: calc(var(--ft-h) * 1.62);
+    transform-style: preserve-3d;
+    transform: rotateY(var(--ft-yaw, 0deg));
+}
+
+.ft-track {
+    display: flex;
+    align-items: center;
+    gap: var(--ft-gap);
+    width: max-content;
+    height: 100%;
+    padding-bottom: calc(var(--ft-h) * 0.14);
+    margin-left: calc(-1 * var(--ft-bleed));
+    transform-style: preserve-3d;
+}
+
+.ft-card {
+    --s: 1;
+    position: relative;
+    flex: 0 0 auto;
+    width: calc(var(--ft-h) * var(--r));
+    height: var(--ft-h);
+    border-radius: var(--ft-radius);
+    transform-origin: 50% 50%;
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.ft-shot {
+    position: absolute;
+    inset: 0;
+    border-radius: calc(var(--ft-radius) / var(--s));
+    overflow: hidden;
+    background: #ddd9ce;
+    box-shadow:
+        inset 0 0 0 1.5px rgba(244, 241, 234, 0.92),
+        0 22px 44px -30px rgba(49, 60, 89, 0.8);
+}
+.ft-shot img {
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+.ft-label {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.6rem;
+    transform: scale(calc(1 / var(--s)));
+    transform-origin: 0 0;
+    white-space: nowrap;
+    font-size: 0.66rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(49, 60, 89, 0.78);
+    transition: color 380ms var(--ft-ease);
+}
+.ft-card:hover .ft-label,
+.ft-card:focus-visible .ft-label {
+    color: #313c59;
+}
+
+/* trilho de progresso */
+.ft-rail {
+    position: relative;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ft-line-soft);
+}
+.ft-rail-thumb {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 40px;
+    border-radius: 2px;
+    background: #313c59;
+    will-change: transform;
+}
+
+/* ---- links ---- */
+.ft-link {
+    position: relative;
+}
+.ft-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 620ms var(--ft-ease);
+}
+.ft-link:hover::after,
+.ft-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.ft-cta {
+    transition: background-color 420ms var(--ft-ease), color 420ms var(--ft-ease), box-shadow 420ms var(--ft-ease);
+    box-shadow: 0 10px 24px -18px rgba(49, 60, 89, 0.9);
+}
+.ft-cta:hover {
+    box-shadow: 0 16px 34px -18px rgba(49, 60, 89, 0.95);
+}
+
+/* ---- hairlines ---- */
+.ft-hair {
+    border-top: 1px solid var(--ft-line);
+}
+.ft-hair-soft {
+    border-top: 1px solid var(--ft-line-soft);
+}
+.ft-hair-b {
+    border-bottom: 1px solid var(--ft-line);
+}
+
+/* ---- zoom sutil nas imagens fora da fita ---- */
+.ft-zoom img {
+    transition: transform 1200ms var(--ft-ease);
+}
+.ft-zoom:hover img {
+    transform: scale(1.04);
+}
+
+/* ---- painel do contato ---- */
+.ft-panel {
+    border: 1px solid rgba(49, 60, 89, 0.2);
+    background: #f4f1ea;
+    box-shadow: 0 30px 70px -50px rgba(49, 60, 89, 0.85);
+}
+
+/* ---- formulário ---- */
+.ft-field {
+    position: relative;
+}
+.ft-input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--ft-line);
+    border-radius: 0;
+    padding: 0.8rem 0.15rem;
+    color: #313c59;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 420ms var(--ft-ease);
+}
+.ft-input::placeholder {
+    color: rgba(49, 60, 89, 0.5);
+}
+.ft-input:focus {
+    outline: none;
+    border-bottom-color: #313c59;
+}
+.ft-input:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 4px;
+}
+.ft-input[data-state="valid"] {
+    border-bottom-color: rgba(49, 60, 89, 0.8);
+}
+.ft-input[data-state="error"] {
+    border-bottom-style: dashed;
+    border-bottom-color: #313c59;
+}
+.ft-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+}
+.ft-field-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: #313c59;
+}
+
+/* ---- menu mobile ---- */
+.ft-menu {
+    animation: ft-menu-in 520ms var(--ft-ease) both;
+}
+@keyframes ft-menu-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.ft-menu-item {
+    animation: ft-item-in 700ms var(--ft-ease) both;
+    animation-delay: var(--d, 0ms);
+}
+@keyframes ft-item-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ft-zoom img,
+    .ft-link::after,
+    .ft-cta,
+    .ft-label {
+        transition: none;
+    }
+    .ft-menu,
+    .ft-menu-item {
+        animation: none;
+    }
+}
