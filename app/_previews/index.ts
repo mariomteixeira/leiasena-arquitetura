@@ -18,4 +18,9 @@ export const variants: HomeVariant[] = [
     { id: "marquise", name: "Marquise", load: () => import("./v08-marquise") },
     { id: "vitrine", name: "Vitrine", load: () => import("./v09-vitrine") },
     { id: "revista", name: "Revista", load: () => import("./v10-revista") },
+    { id: "fita", name: "Marquise · Fita", load: () => import("./v11-fita") },
+    { id: "lente", name: "Marquise · Lente", load: () => import("./v12-lente") },
+    { id: "arco", name: "Marquise · Arco", load: () => import("./v13-arco") },
+    { id: "mosaico", name: "Marquise · Mosaico", load: () => import("./v14-mosaico") },
+    { id: "trilho", name: "Marquise · Trilho", load: () => import("./v15-trilho") },
 ];
