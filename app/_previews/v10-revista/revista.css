@@ -1,0 +1,144 @@
+/* v10 — Revista. White page, near-black type, navy rules and labels, ice-white paper insets. */
+
+.rv {
+    --rv-hair: rgba(23, 23, 23, 0.16);
+    --rv-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-x: clip;
+}
+.rv-hair { border-color: var(--rv-hair); }
+.rv section[id] { scroll-margin-top: 3.5rem; }
+
+/* Masthead */
+.rv-masthead h1 {
+    font-size: clamp(4rem, 10.4vw, 10rem);
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+}
+
+/* Running head (appears once the masthead has scrolled away) */
+.rv-runhead {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 40;
+    background: #ffffff;
+    transform: translateY(-101%);
+    transition: transform 500ms var(--rv-ease);
+}
+.rv-runhead.is-on { transform: translateY(0); }
+
+/* Mobile menu */
+.rv-menu { animation: rv-menu-in 500ms var(--rv-ease) both; }
+@keyframes rv-menu-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tilt (quiet ±3° toward the cursor) */
+.rv-tilt { perspective: 1000px; }
+.rv-tilt-inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 700ms var(--rv-ease);
+}
+
+/* Spreads: entrance with the right page slightly turned, settling flat */
+.rv-reveal { transition: opacity 900ms var(--rv-ease); }
+@media (prefers-reduced-motion: no-preference) {
+    .js .rv-reveal:not(.is-inview) { opacity: 0; }
+    .js .rv-reveal:not(.is-inview) .rv-page { transform: rotateY(-12deg); }
+}
+
+/* Page turn */
+.rv-slot {
+    position: relative;
+    perspective: 1600px;
+    perspective-origin: 50% 50%;
+    z-index: 2;
+}
+.rv-under { position: absolute; inset: 0; background: #ddd9ce; }
+.rv-page {
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 900ms var(--rv-ease);
+    cursor: pointer;
+    will-change: transform;
+}
+.rv-page.is-open { transform: rotateY(-180deg); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .rv-spread:hover .rv-page:not(.is-open) { transform: rotateY(-28deg); }
+}
+.rv-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.rv-front { background: #ffffff; }
+.rv-front::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 7%;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(23, 23, 23, 0.07), rgba(23, 23, 23, 0));
+}
+.rv-back { transform: rotateY(180deg); background: #ddd9ce; }
+@media (max-width: 767px) {
+    .rv-page { transform-origin: center center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .rv-page, .rv-tilt-inner, .rv-runhead { transition-duration: 1ms; }
+    .rv-menu { animation: none; }
+}
+
+/* Drop cap */
+.rv-dropcap::first-letter {
+    font-family: var(--font-bodoni-moda), "Bodoni Moda", serif;
+    font-size: 4.9em;
+    line-height: 0.76;
+    float: left;
+    padding: 0.08em 0.12em 0 0;
+    color: #313c59;
+}
+
+/* Contact form (reused component, restyled to the magazine vocabulary) */
+.rv-form form {
+    border-radius: 0;
+    background: #ddd9ce;
+    border: 1px solid var(--rv-hair);
+}
+.rv-form form h3 {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: #313c59;
+}
+.rv-form input,
+.rv-form select {
+    border-radius: 0;
+    background: #ffffff;
+    font-weight: 400;
+    font-size: 16px;
+}
+.rv-form form button[type="submit"] {
+    border-radius: 0;
+    background: #313c59;
+    color: #ffffff;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+}
+.rv-form form button[type="submit"]:hover { background: #171717; }
+.rv-form form .border-green-400,
+.rv-form form .border-green-500,
+.rv-form form .focus\:border-green-500:focus { border-color: #313c59; }
+.rv-form form .text-green-700 { color: #313c59; }
