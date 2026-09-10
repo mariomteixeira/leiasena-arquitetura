@@ -198,8 +198,8 @@
     .vt-hero-copy { padding-right: 56px; padding-block: 64px; }
 }
 .vt-hero-title {
-    font-family: var(--font-geist-sans), sans-serif;
-    font-weight: 400;
+    font-family: var(--font-archivo), var(--font-geist-sans), sans-serif;
+    font-weight: 500;
     font-size: clamp(2.5rem, 1.5rem + 2.5vw, 3.8rem);
     line-height: 1.04;
     letter-spacing: -0.025em;

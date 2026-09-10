@@ -1,0 +1,183 @@
+/* v08 "Marquise" — curvas contra a grade. Creme, navio, arcos. */
+
+.mrq {
+    --mrq-line: rgba(49, 60, 89, 0.24);
+    --mrq-line-soft: rgba(49, 60, 89, 0.12);
+    --mrq-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- arcos ---- */
+.mrq-arch {
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+}
+.mrq-arch-wide {
+    border-radius: 50% 50% 0 0 / 34% 34% 0 0;
+    overflow: hidden;
+}
+.mrq-arch-panel {
+    border-radius: 50% 50% 0 0 / 5rem 5rem 0 0;
+}
+@media (min-width: 768px) {
+    .mrq-arch-panel {
+        border-radius: 50% 50% 0 0 / 7.5rem 7.5rem 0 0;
+    }
+}
+
+/* ---- imagem dentro do arco ---- */
+.mrq-zoom img {
+    transition: transform 1200ms var(--mrq-ease);
+}
+.mrq-card:hover .mrq-zoom img,
+.mrq-card:focus-visible .mrq-zoom img {
+    transform: scale(1.04);
+}
+
+/* ---- links ---- */
+.mrq-link {
+    position: relative;
+}
+.mrq-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 620ms var(--mrq-ease);
+}
+.mrq-link:hover::after,
+.mrq-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.mrq-cta {
+    transition: background-color 420ms var(--mrq-ease), color 420ms var(--mrq-ease), box-shadow 420ms var(--mrq-ease);
+    box-shadow: 0 10px 24px -18px rgba(49, 60, 89, 0.9);
+}
+.mrq-cta:hover {
+    box-shadow: 0 16px 34px -18px rgba(49, 60, 89, 0.95);
+}
+
+/* ---- hairlines ---- */
+.mrq-hair {
+    border-top: 1px solid var(--mrq-line);
+}
+.mrq-hair-soft {
+    border-top: 1px solid var(--mrq-line-soft);
+}
+
+/* ---- cena / arraste ---- */
+.mrq-stage {
+    touch-action: pan-y;
+    cursor: grab;
+}
+.mrq-stage[data-dragging="true"] {
+    cursor: grabbing;
+}
+.mrq-fade {
+    transition: opacity 760ms var(--mrq-ease);
+}
+
+/* ---- formulário ---- */
+.mrq-field {
+    position: relative;
+}
+.mrq-input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--mrq-line);
+    border-radius: 0;
+    padding: 0.8rem 0.15rem;
+    color: #313c59;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 420ms var(--mrq-ease);
+}
+.mrq-input::placeholder {
+    color: rgba(49, 60, 89, 0.5);
+}
+.mrq-input:focus {
+    outline: none;
+    border-bottom-color: #313c59;
+}
+.mrq-input:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 4px;
+}
+.mrq-input[data-state="valid"] {
+    border-bottom-color: rgba(49, 60, 89, 0.8);
+}
+.mrq-input[data-state="error"] {
+    border-bottom-style: dashed;
+    border-bottom-color: #313c59;
+}
+.mrq-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+}
+.mrq-field-note {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: #313c59;
+}
+
+/* ---- menu mobile ---- */
+.mrq-menu {
+    animation: mrq-menu-in 520ms var(--mrq-ease) both;
+}
+@keyframes mrq-menu-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.mrq-menu-item {
+    animation: mrq-item-in 700ms var(--mrq-ease) both;
+    animation-delay: var(--d, 0ms);
+}
+@keyframes mrq-item-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mrq-zoom img,
+    .mrq-link::after,
+    .mrq-cta,
+    .mrq-fade {
+        transition: none;
+    }
+    .mrq-menu,
+    .mrq-menu-item {
+        animation: none;
+    }
+}
+
+/* ---- palco do hero ---- */
+.mrq-hero-stage {
+    height: max(15rem, min(50vh, calc(100dvh - 19rem)));
+}
+@media (min-width: 768px) {
+    .mrq-hero-stage {
+        height: max(18rem, min(70vh, calc(100dvh - 26rem)));
+    }
+}
+
+/* ---- painel do contato ---- */
+.mrq-panel {
+    border: 1px solid rgba(49, 60, 89, 0.2);
+    background: #f4f1ea;
+    box-shadow: 0 30px 70px -50px rgba(49, 60, 89, 0.85);
+}
+
+.mrq-hair-b {
+    border-bottom: 1px solid var(--mrq-line);
+}
