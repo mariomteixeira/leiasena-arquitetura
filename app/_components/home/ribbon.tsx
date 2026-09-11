@@ -463,7 +463,14 @@ export default function Ribbon() {
                                         fill
                                         draggable={false}
                                         loading={i < 5 ? "eager" : "lazy"}
-                                        sizes="(max-width: 767px) 190px, 260px"
+                                        /*
+                                         * O card e 9:16 e as fotos sao 16:9, entao `object-cover`
+                                         * mostra so ~1/3 da largura do arquivo. `sizes` precisa
+                                         * pedir a largura da FONTE, nao a da moldura: card * 3,16.
+                                         * Quando as fotos vierem em 9:16 esse fator vira 1 e estes
+                                         * numeros caem para a largura do card.
+                                         */
+                                        sizes="(max-width: 767px) 544px, 720px"
                                         className="object-cover object-center"
                                     />
                                 </span>
