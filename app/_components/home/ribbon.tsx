@@ -297,33 +297,47 @@ export default function Ribbon() {
         }
 
         // ---------------------------------------------------------- ponteiro
+        /**
+         * So capturamos o ponteiro depois que o dedo/mouse anda de verdade.
+         * `setPointerCapture` redireciona o clique seguinte para quem capturou,
+         * entao capturar no pointerdown fazia o clique cair na fita em vez do
+         * link do card — e no desktop nenhum projeto abria.
+         */
+        const DRAG_START = 5;
         let dragId = -1;
         let startX = 0;
         let startOff = 0;
         let moved = 0;
+        let pressing = false;
+        let captured = false;
 
         function onDown(e: PointerEvent) {
             if (e.button !== 0) return;
             dragId = e.pointerId;
-            try {
-                strip.setPointerCapture(e.pointerId);
-            } catch {
-                /* sem captura: o arrasto ainda funciona */
-            }
-            mode = "drag";
+            pressing = true;
+            captured = false;
             startX = e.clientX;
             startOff = offset;
             moved = 0;
             vel = 0;
             dragDelta = 0;
-            strip.dataset.drag = "true";
-            kick();
         }
 
         function onMove(e: PointerEvent) {
-            if (e.pointerId !== dragId || mode !== "drag") return;
+            if (e.pointerId !== dragId || !pressing) return;
             const dx = e.clientX - startX;
             if (Math.abs(dx) > moved) moved = Math.abs(dx);
+            if (!captured) {
+                if (moved <= DRAG_START) return; // ainda pode virar um clique
+                captured = true;
+                try {
+                    strip.setPointerCapture(e.pointerId);
+                } catch {
+                    /* sem captura: o arrasto ainda funciona */
+                }
+                mode = "drag";
+                strip.dataset.drag = "true";
+            }
             const next = clamp(startOff - dx, minOff, maxOff);
             dragDelta += next - offset;
             offset = next;
@@ -333,13 +347,17 @@ export default function Ribbon() {
         function onUp(e: PointerEvent) {
             if (e.pointerId !== dragId) return;
             dragId = -1;
+            pressing = false;
             strip.dataset.drag = "false";
-            if (mode === "drag") mode = reduced ? "idle" : "free";
-            kick();
+            if (captured) {
+                captured = false;
+                if (mode === "drag") mode = reduced ? "idle" : "free";
+                kick();
+            }
         }
 
         function onClickCapture(e: MouseEvent) {
-            if (moved > 6) {
+            if (moved > DRAG_START) {
                 e.preventDefault();
                 e.stopPropagation();
             }
