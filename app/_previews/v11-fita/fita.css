@@ -30,7 +30,7 @@
    As imagens dos projetos vao ser produzidas nesse formato; as horizontais
    de hoje entram recortadas pelo centro. */
 .ft-strip {
-    --ft-w: 142px;
+    --ft-w: 172px;
     --ft-ch: calc(var(--ft-w) * 16 / 9);
     --ft-gap: 11px;
     --ft-bleed: 46px;
@@ -46,7 +46,7 @@
 }
 @media (min-width: 768px) {
     .ft-strip {
-        --ft-w: 196px;
+        --ft-w: 228px;
         --ft-gap: 20px;
         --ft-bleed: 92px;
     }
@@ -55,8 +55,10 @@
     cursor: grabbing;
 }
 
+/* A faixa: a altura do card central. Os demais cabem dentro dela com folga
+   para subir e descer, como o cavalo de um carrossel. */
 .ft-yaw {
-    height: calc(var(--ft-ch) * 1.36);
+    height: calc(var(--ft-ch) * 1.2);
     transform-style: preserve-3d;
     transform: rotateY(var(--ft-yaw, 0deg));
 }
@@ -67,11 +69,12 @@
     gap: var(--ft-gap);
     width: max-content;
     height: 100%;
-    padding-bottom: calc(var(--ft-ch) * 0.1);
     margin-left: calc(-1 * var(--ft-bleed));
     transform-style: preserve-3d;
 }
 
+/* A caixa e sempre 9:16 na altura cheia da faixa; o card so chega nesse
+   tamanho quando esta no centro. Fora dele encolhe pela escala. */
 .ft-card {
     --s: 1;
     position: relative;
@@ -84,9 +87,15 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+/* O formato: --clip recorta topo e base por dentro do card, entao a moldura
+   deixa de ser 9:16 e a imagem se recompoe sozinha no que sobra. E um
+   posicionamento absoluto, logo nao reflui nenhum irmao. */
 .ft-shot {
     position: absolute;
-    inset: 0;
+    left: 0;
+    right: 0;
+    top: calc(var(--clip, 0) * 100%);
+    bottom: calc(var(--clip, 0) * 100%);
     border-radius: calc(var(--ft-radius) / var(--s));
     overflow: hidden;
     background: #ddd9ce;
@@ -97,26 +106,6 @@
 .ft-shot img {
     -webkit-user-drag: none;
     user-select: none;
-}
-
-.ft-label {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 0.6rem;
-    transform: scale(calc(1 / var(--s)));
-    transform-origin: 0 0;
-    white-space: nowrap;
-    font-size: 0.66rem;
-    line-height: 1;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(49, 60, 89, 0.78);
-    transition: color 380ms var(--ft-ease);
-}
-.ft-card:hover .ft-label,
-.ft-card:focus-visible .ft-label {
-    color: #313c59;
 }
 
 /* trilho de progresso */

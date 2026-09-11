@@ -64,9 +64,6 @@ export default function Fita() {
                         <h2 className="font-serif text-[2rem] leading-none tracking-[-0.02em] sm:text-[2.4rem]">
                             Projetos
                         </h2>
-                        <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-navy/80">
-                            {projects.map((p) => p.title).join(" · ")}
-                        </p>
                     </div>
                 </div>
 

@@ -18,8 +18,6 @@ import { mixedSelection } from "../_shared/gallery";
 
 const SHOTS = mixedSelection(15);
 
-const S_MIN = 0.84;
-const S_MAX = 1.25;
 const ROT_DEG = 22;
 const TZ_NEAR = 62;
 const TZ_FAR = -16;
@@ -27,6 +25,39 @@ const PERSP = 1400;
 const YAW_MAX = 2.6;
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
+
+/**
+ * Cada card tem o seu jeito de viajar: um tamanho, um recorte (que muda o
+ * formato da moldura), uma altura e uma inclinacao proprios. Sao valores
+ * fixos por posicao — nada sorteado a cada render — e todos os quatro sao
+ * entregues ao padrao conforme o card chega ao centro. No centro: altura
+ * cheia da faixa, 9:16, reto e centrado.
+ */
+interface Trait {
+    /** escala em repouso, fora do centro */
+    k: number;
+    /** recorte de topo e base, em fracao da altura da caixa */
+    clip: number;
+    /** deslocamento vertical em repouso, em fracao da altura da faixa */
+    y: number;
+    /** rolagem em repouso, em graus */
+    tilt: number;
+}
+
+function traitsFor(i: number): Trait {
+    const h = (seed: number) => {
+        const x = Math.sin(i * 127.1 + seed * 311.7) * 43758.5453;
+        return x - Math.floor(x);
+    };
+    return {
+        k: 0.56 + h(1) * 0.26,
+        clip: 0.015 + h(2) * 0.125,
+        y: (h(3) - 0.5) * 0.19,
+        tilt: (h(4) - 0.5) * 5.4,
+    };
+}
+
+const TRAITS: Trait[] = SHOTS.map((_, i) => traitsFor(i));
 
 export default function Ribbon() {
     const stripRef = useRef<HTMLDivElement | null>(null);
@@ -51,11 +82,13 @@ export default function Ribbon() {
         if (!n) return;
 
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const sMin = reduced ? 1 : S_MIN;
-        const sMax = reduced ? 1 : S_MAX;
         const rotMax = reduced ? 0 : (ROT_DEG * Math.PI) / 180;
         const tzNear = reduced ? 0 : TZ_NEAR;
         const tzFar = reduced ? 0 : TZ_FAR;
+        /** Com movimento reduzido a fita fica uniforme: todo card no padrao. */
+        const traits: Trait[] = reduced
+            ? TRAITS.map(() => ({ k: 1, clip: 0, y: 0, tilt: 0 }))
+            : TRAITS;
 
         const restW = new Float64Array(n);
         const restC = new Float64Array(n);
@@ -66,7 +99,9 @@ export default function Ribbon() {
         const paArr = new Float64Array(n);
         const pcArr = new Float64Array(n);
         const lastS = new Float64Array(n).fill(-1);
+        const lastClip = new Float64Array(n).fill(-1);
 
+        let bandH = 1;
         let vw = 1;
         let gap = 0;
         let bleed = 0;
@@ -96,11 +131,12 @@ export default function Ribbon() {
                 let s = S[i];
                 let a = A[i];
                 let mag = 1;
+                const kRest = traits[i].k;
                 for (let k = 0; k < 3; k++) {
                     const d = acc + (s * w * Math.cos(a) * mag) / 2 - focus;
                     const p = clamp(1 - Math.abs(d) / radius, 0, 1);
                     const e = p * p * (3 - 2 * p);
-                    s = sMin + (sMax - sMin) * e;
+                    s = kRest + (1 - kRest) * e;
                     a = clamp(d / radiusRot, -1, 1) * rotMax;
                     mag = PERSP / (PERSP - (tzFar + (tzNear - tzFar) * e));
                 }
@@ -119,18 +155,30 @@ export default function Ribbon() {
             for (let i = 0; i < n; i++) {
                 const p = clamp(1 - Math.abs(cArr[i] - focus) / radius, 0, 1);
                 const e = p * p * (3 - 2 * p);
+                // `rest` e o quanto o card ainda guarda do jeito dele; no
+                // centro vale 0 e os quatro tracos somem de uma vez.
+                const rest = 1 - e;
+                const t = traits[i];
                 const tz = tzFar + (tzNear - tzFar) * e;
                 const dx = cArr[i] - offset - restC[i];
+                const dy = t.y * rest * bandH;
                 const deg = (aArr[i] * 180) / Math.PI;
+                const roll = t.tilt * rest;
                 const el = cards[i];
                 el.style.transform =
-                    "translate3d(" + dx.toFixed(2) + "px,0," + tz.toFixed(2) + "px)" +
+                    "translate3d(" + dx.toFixed(2) + "px," + dy.toFixed(2) + "px," + tz.toFixed(2) + "px)" +
                     " rotateY(" + deg.toFixed(3) + "deg)" +
+                    " rotateZ(" + roll.toFixed(3) + "deg)" +
                     " scale(" + sArr[i].toFixed(4) + ")";
                 const q = Math.round(sArr[i] * 1000) / 1000;
                 if (q !== lastS[i]) {
                     el.style.setProperty("--s", String(q));
                     lastS[i] = q;
+                }
+                const c = Math.round(t.clip * rest * 10000) / 10000;
+                if (c !== lastClip[i]) {
+                    el.style.setProperty("--clip", String(c));
+                    lastClip[i] = c;
                 }
             }
 
@@ -200,6 +248,7 @@ export default function Ribbon() {
             gap = parseFloat(cs.columnGap) || 0;
             bleed = Math.abs(parseFloat(cs.marginLeft) || 0);
             const base = cards[0].offsetLeft;
+            bandH = cards[0].offsetHeight || 1;
             let sum = 0;
             for (let i = 0; i < n; i++) {
                 restW[i] = cards[i].offsetWidth;
@@ -400,7 +449,6 @@ export default function Ribbon() {
                                         className="object-cover object-center"
                                     />
                                 </span>
-                                <span className="ft-label font-mono">{shot.project}</span>
                             </Link>
                         ))}
                     </div>
