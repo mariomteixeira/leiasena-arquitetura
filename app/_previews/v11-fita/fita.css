@@ -26,10 +26,14 @@
 }
 
 /* ---------------------------------------------------------------- a fita ---- */
+/* Os cards sao verticais 9:16: a largura manda, a altura decorre dela.
+   As imagens dos projetos vao ser produzidas nesse formato; as horizontais
+   de hoje entram recortadas pelo centro. */
 .ft-strip {
-    --ft-h: 136px;
-    --ft-gap: 12px;
-    --ft-bleed: 54px;
+    --ft-w: 142px;
+    --ft-ch: calc(var(--ft-w) * 16 / 9);
+    --ft-gap: 11px;
+    --ft-bleed: 46px;
     position: relative;
     width: 100%;
     overflow-x: clip;
@@ -42,9 +46,9 @@
 }
 @media (min-width: 768px) {
     .ft-strip {
-        --ft-h: 224px;
-        --ft-gap: 22px;
-        --ft-bleed: 96px;
+        --ft-w: 196px;
+        --ft-gap: 20px;
+        --ft-bleed: 92px;
     }
 }
 .ft-strip[data-drag="true"] {
@@ -52,7 +56,7 @@
 }
 
 .ft-yaw {
-    height: calc(var(--ft-h) * 1.62);
+    height: calc(var(--ft-ch) * 1.36);
     transform-style: preserve-3d;
     transform: rotateY(var(--ft-yaw, 0deg));
 }
@@ -63,7 +67,7 @@
     gap: var(--ft-gap);
     width: max-content;
     height: 100%;
-    padding-bottom: calc(var(--ft-h) * 0.14);
+    padding-bottom: calc(var(--ft-ch) * 0.1);
     margin-left: calc(-1 * var(--ft-bleed));
     transform-style: preserve-3d;
 }
@@ -72,8 +76,8 @@
     --s: 1;
     position: relative;
     flex: 0 0 auto;
-    width: calc(var(--ft-h) * var(--r));
-    height: var(--ft-h);
+    width: var(--ft-w);
+    height: var(--ft-ch);
     border-radius: var(--ft-radius);
     transform-origin: 50% 50%;
     will-change: transform;

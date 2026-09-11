@@ -32,6 +32,7 @@ export interface Shot {
 const SERVICE_ROOMS = new Set([
     "Anny/7", "Anny/10",
     "Debora/5", "Debora/6",
+    "Felipe/8",
     "Gustavo/5", "Gustavo/6", "Gustavo/7",
 ]);
 

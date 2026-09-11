@@ -2,35 +2,21 @@
 
 /**
  * A fita: uma tira horizontal de cards que sangra pelas duas bordas da tela.
- * Todos os cards partem da MESMA altura de repouso, entao a largura de cada um
- * e a proporcao nativa da imagem. Conforme um card se aproxima do centro
- * horizontal da janela ele cresce ate ~1,25x e os vizinhos encolhem; ao mesmo
- * tempo cada card ganha um rotateY proporcional a distancia com sinal e um
- * translateZ, de modo que a tira le como um arco raso envolvendo quem olha.
- * Um unico loop de rAF, que so roda enquanto a tira esta na tela e em movimento.
+ * Os cards sao verticais 9:16, todos do mesmo tamanho em repouso — e o formato
+ * em que as imagens dos projetos vao ser produzidas. Conforme um card se
+ * aproxima do centro horizontal da janela ele cresce ate ~1,25x e os vizinhos
+ * encolhem; ao mesmo tempo cada card ganha um rotateY proporcional a distancia
+ * com sinal e um translateZ, de modo que a tira le como um arco raso
+ * envolvendo quem olha. Um unico loop de rAF, que so roda enquanto a tira esta
+ * na tela e em movimento.
  */
 
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { mixedSelection, type Shot } from "../_shared/gallery";
+import { mixedSelection } from "../_shared/gallery";
 
-/** Alterna larguras e alturas para que a silhueta da fita ja varie em repouso. */
-function interleave(list: Shot[]): Shot[] {
-    const wide = list.filter((s) => s.ratio >= 1.3);
-    const tall = list.filter((s) => s.ratio < 1.3);
-    const out: Shot[] = [];
-    let wi = 0;
-    let ti = 0;
-    while (wi < wide.length || ti < tall.length) {
-        if (wi < wide.length) out.push(wide[wi++]);
-        if (ti < tall.length) out.push(tall[ti++]);
-        if (wi < wide.length && wide.length - wi > tall.length - ti) out.push(wide[wi++]);
-    }
-    return out;
-}
-
-const SHOTS = interleave(mixedSelection(15));
+const SHOTS = mixedSelection(15);
 
 const S_MIN = 0.84;
 const S_MAX = 1.25;
@@ -402,7 +388,6 @@ export default function Ribbon() {
                                 href={`/projetos/${shot.slug}`}
                                 draggable={false}
                                 className="ft-card"
-                                style={{ ["--r" as string]: shot.ratio.toFixed(4) }}
                             >
                                 <span className="ft-shot block">
                                     <Image
@@ -410,9 +395,9 @@ export default function Ribbon() {
                                         alt={`Projeto ${shot.project} — imagem ${shot.index}`}
                                         fill
                                         draggable={false}
-                                        loading={i < 4 ? "eager" : "lazy"}
-                                        sizes="(max-width: 767px) 320px, 640px"
-                                        className="object-cover"
+                                        loading={i < 5 ? "eager" : "lazy"}
+                                        sizes="(max-width: 767px) 190px, 260px"
+                                        className="object-cover object-center"
                                     />
                                 </span>
                                 <span className="ft-label font-mono">{shot.project}</span>
