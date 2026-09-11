@@ -3,6 +3,7 @@
 @theme {
   --color-ice-white: #ddd9ce;
   --color-navy: #313c59;
+  --color-cream: #f4f1ea;
   --transition-duration-1500: 1500ms;
 }
 
@@ -17,6 +18,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-bodoni-moda);
+  --font-archivo: var(--font-archivo);
+  --font-condensed: var(--font-big-shoulders);
 }
 
 @media (prefers-color-scheme: dark) {
