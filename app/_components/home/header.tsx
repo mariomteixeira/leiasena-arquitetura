@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { brand, copy } from "../../_lib/content";
+import Wordmark from "./wordmark";
 import { IconClose, IconMenu } from "./icons";
 
 export default function Header() {
@@ -37,11 +38,8 @@ export default function Header() {
                 }`}
             >
                 <div className="mx-auto flex h-16 max-w-[86rem] items-center justify-between px-5 sm:h-20 sm:px-8">
-                    <a
-                        href="#home"
-                        className="font-serif text-[1.45rem] italic leading-none tracking-[-0.01em] text-navy sm:text-[1.7rem]"
-                    >
-                        {brand.shortName}
+                    <a href="#home" className="text-navy" aria-label="Léia Sena Arquitetura — início">
+                        <Wordmark className="w-[8.6rem] sm:w-[10.5rem]" />
                     </a>
 
                     <nav className="hidden items-center gap-9 md:flex" aria-label="Principal">
@@ -71,7 +69,7 @@ export default function Header() {
             {open && (
                 <div className="ft-menu fixed inset-0 z-[60] bg-cream md:hidden" role="dialog" aria-modal="true">
                     <div className="flex h-16 items-center justify-between px-5">
-                        <span className="font-serif text-[1.45rem] italic leading-none text-navy">{brand.shortName}</span>
+                        <span className="text-navy"><Wordmark className="w-[8.6rem]" /></span>
                         <button
                             type="button"
                             onClick={() => setOpen(false)}

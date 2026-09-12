@@ -1,0 +1,250 @@
+/* p08 "Índice" — a folha de contato do projeto: tudo na tela de uma vez. */
+
+.ix {
+    --ix-line: rgba(49, 60, 89, 0.24);
+    --ix-line-soft: rgba(49, 60, 89, 0.12);
+    --ix-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ix-gap: 10px;
+    --ix-r: 12px;
+    --ix-stage-h: 74vh;
+}
+@media (min-width: 720px) {
+    .ix {
+        --ix-gap: 14px;
+        --ix-r: 18px;
+        --ix-stage-h: 66vh;
+    }
+}
+
+/* ---- hairlines e links (mesmo vocabulário da home) ---- */
+.ix-hair {
+    border-top: 1px solid var(--ix-line);
+}
+.ix-hair-soft {
+    border-top: 1px solid var(--ix-line-soft);
+}
+
+.ix-link {
+    position: relative;
+}
+.ix-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.3em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 620ms var(--ix-ease);
+}
+.ix-link:hover::after,
+.ix-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+/* ---------------------------------------------------------- a folha ---- */
+.ix-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ix-gap);
+}
+
+.ix-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ix-gap);
+    width: 100%;
+}
+
+.ix-cell {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: var(--r);
+    border-radius: var(--ix-r);
+    overflow: hidden;
+    background: #ddd9ce;
+    box-shadow: inset 0 0 0 1.5px rgba(244, 241, 234, 0.92);
+    cursor: zoom-in;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 520ms var(--ix-ease), box-shadow 320ms var(--ix-ease);
+}
+.ix-cell:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 3px;
+}
+.ix-img {
+    object-fit: cover;
+    transition: transform 1100ms var(--ix-ease);
+}
+.ix-cell:hover .ix-img,
+.ix-cell:focus-visible .ix-img {
+    transform: scale(1.035);
+}
+
+/* o número do quadro, no canto */
+.ix-num {
+    position: absolute;
+    left: 7px;
+    bottom: 7px;
+    padding: 2px 5px 1px;
+    border-radius: 4px;
+    background: rgba(244, 241, 234, 0.92);
+    color: #313c59;
+    font-size: 10px;
+    line-height: 1.35;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 320ms var(--ix-ease), color 320ms var(--ix-ease);
+}
+@media (min-width: 720px) {
+    .ix-num {
+        left: 9px;
+        bottom: 9px;
+        font-size: 11px;
+    }
+}
+
+/* com o palco aberto, o resto da folha recua */
+.ix-sheet[data-open="true"] .ix-cell {
+    opacity: 0.45;
+    cursor: pointer;
+}
+.ix-sheet[data-open="true"] .ix-cell[data-sel="true"] {
+    opacity: 1;
+    cursor: zoom-out;
+    box-shadow: inset 0 0 0 2px #313c59;
+}
+.ix-sheet[data-open="true"] .ix-cell[data-sel="true"] .ix-num {
+    background: #313c59;
+    color: #f4f1ea;
+}
+.ix-sheet[data-open="true"] .ix-cell:hover,
+.ix-sheet[data-open="true"] .ix-cell:focus-visible {
+    opacity: 0.82;
+}
+
+/* ------------------------------------------------------------ palco ---- */
+.ix-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-block: calc(var(--ix-gap) * 0.55);
+    animation: ix-stage-in 620ms var(--ix-ease) both;
+}
+@keyframes ix-stage-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.ix-stage-fig {
+    position: relative;
+    width: min(100%, calc(var(--ix-stage-h) * var(--r)));
+    aspect-ratio: var(--r);
+    border-radius: 22px;
+    overflow: hidden;
+    background: #ddd9ce;
+    box-shadow:
+        inset 0 0 0 1.5px rgba(244, 241, 234, 0.92),
+        0 34px 62px -40px rgba(49, 60, 89, 0.9);
+    touch-action: pan-y;
+    animation: ix-shot-in 520ms var(--ix-ease) both;
+}
+@keyframes ix-shot-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.ix-stage-img {
+    object-fit: contain;
+}
+
+.ix-stage-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(100%, calc(var(--ix-stage-h) * var(--r)));
+    margin-top: 0.7rem;
+}
+
+.ix-ctrl {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid var(--ix-line);
+    color: #313c59;
+    transition: background-color 320ms var(--ix-ease), color 320ms var(--ix-ease), border-color 320ms var(--ix-ease);
+}
+.ix-ctrl:hover {
+    background: #313c59;
+    border-color: #313c59;
+    color: #f4f1ea;
+}
+.ix-ctrl:active {
+    transform: scale(0.94);
+}
+.ix-ctrl:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 3px;
+}
+@media (min-width: 720px) {
+    .ix-ctrl {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* ------------------------------------------------------ fim da página ---- */
+.ix-arch {
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+}
+
+.ix-other {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 0 1rem;
+    padding-block: 0.95rem;
+}
+.ix-other .ix-arrow {
+    transition: transform 520ms var(--ix-ease);
+}
+.ix-other:hover .ix-arrow,
+.ix-other:focus-visible .ix-arrow {
+    transform: translateX(5px);
+}
+.ix-other:focus-visible {
+    outline: 2px solid #313c59;
+    outline-offset: 4px;
+}
+.ix-other-thumb img {
+    transition: transform 1100ms var(--ix-ease);
+}
+.ix-other:hover .ix-other-thumb img {
+    transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ix-img,
+    .ix-cell,
+    .ix-num,
+    .ix-ctrl,
+    .ix-link::after,
+    .ix-other .ix-arrow,
+    .ix-other-thumb img {
+        transition: none;
+    }
+    .ix-stage,
+    .ix-stage-fig {
+        animation: none;
+    }
+    .ix-row {
+        transition: none !important;
+    }
+}
